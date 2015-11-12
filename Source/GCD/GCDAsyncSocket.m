@@ -3280,6 +3280,24 @@ enum GCDAsyncSocketConfig
 		dispatch_sync(socketQueue, block);
 }
 
+- (void)disconnectWithError:(NSError*)error
+{
+  dispatch_block_t block = ^{ @autoreleasepool {
+
+    if (flags & kSocketStarted)
+    {
+      [self closeWithError:error];
+    }
+  }};
+
+  // Synchronous disconnection with error
+
+  if (dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey))
+    block();
+  else
+    dispatch_sync(socketQueue, block);
+}
+
 - (void)disconnectAfterReading
 {
 	dispatch_async(socketQueue, ^{ @autoreleasepool {

@@ -322,6 +322,8 @@ typedef NS_ENUM(NSInteger, GCDAsyncSocketError) {
 **/
 - (void)disconnect;
 
+- (void)disconnectWithError:(NSError*)error;
+
 /**
  * Disconnects after all pending reads have completed.
  * After calling this, the read and write methods will do nothing.
