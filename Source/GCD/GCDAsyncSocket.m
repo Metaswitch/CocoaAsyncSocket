@@ -36,7 +36,7 @@
 
 
 #ifndef GCDAsyncSocketLoggingEnabled
-#define GCDAsyncSocketLoggingEnabled 0
+#define GCDAsyncSocketLoggingEnabled 1
 #endif
 
 #if GCDAsyncSocketLoggingEnabled
@@ -69,7 +69,7 @@
 #define LogCTrace()             LogC(LOG_FLAG_VERBOSE, @"%@: %s", THIS_FILE, __FUNCTION__)
 
 #ifndef GCDAsyncSocketLogLevel
-#define GCDAsyncSocketLogLevel LOG_LEVEL_VERBOSE
+#define GCDAsyncSocketLogLevel LOG_LEVEL_INFO
 #endif
 
 // Log levels : off, error, warn, info, verbose
@@ -2235,7 +2235,7 @@ enum GCDAsyncSocketConfig
 		
 		flags |= kSocketStarted;
 		
-		LogVerbose(@"Dispatching DNS lookup...");
+		LogInfo(@"Dispatching DNS lookup...");
 		
 		// It's possible that the given host parameter is actually a NSMutableString.
 		// So we want to copy it now, within this block that will be executed synchronously.
@@ -2559,7 +2559,7 @@ enum GCDAsyncSocketConfig
     
     if (connectInterface)
     {
-        LogVerbose(@"Binding socket...");
+        LogInfo(@"Binding socket...");
         
         if ([[self class] portFromAddress:connectInterface] > 0)
         {
@@ -2706,8 +2706,8 @@ enum GCDAsyncSocketConfig
 	
 	NSAssert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey), @"Must be dispatched on socketQueue");
 	
-	LogVerbose(@"IPv4: %@:%hu", [[self class] hostFromAddress:address4], [[self class] portFromAddress:address4]);
-	LogVerbose(@"IPv6: %@:%hu", [[self class] hostFromAddress:address6], [[self class] portFromAddress:address6]);
+	LogInfo(@"IPv4: %@:%hu", [[self class] hostFromAddress:address4], [[self class] portFromAddress:address4]);
+	LogInfo(@"IPv6: %@:%hu", [[self class] hostFromAddress:address6], [[self class] portFromAddress:address6]);
 	
 	// Determine socket type
 	
@@ -3090,7 +3090,7 @@ enum GCDAsyncSocketConfig
 
 - (void)closeWithError:(NSError *)error
 {
-	LogTrace();
+	LogWarn(@"Closing stream with error: %@", error);
 	NSAssert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey), @"Must be dispatched on socketQueue");
 	
 	[self endConnectTimeout];
